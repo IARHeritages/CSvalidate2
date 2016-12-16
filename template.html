@@ -1,0 +1,377 @@
+<!-- Modal for surveys -->
+<div id="survey" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Survey</h4>
+      </div>
+      <div class="modal-body" style="display: flex; justify-content: center;">
+          <!-- Change the link to google form of your choice-->
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdeuBa0z7kKbEzkVw2UK89u1pa61klSVJuScAUJUlFR7L2Q9g/viewform?embedded=true" width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!-- Success and Error Messages for the user -->
+<div class="row">
+    <div class="col-md-6 col-md-offset-2" style="height:50px">
+        <!-- SUCCESS message for the user -->
+        <div id="success" class="alert alert-success" style="display:none;">
+            <a class="close">×</a>
+            <strong id="i18n_welldone">Well done!</strong> <span id="i18n_welldone_text">Your answer has been saved</span>
+        </div>
+        <!-- LOADING message for the user -->
+        <div id="loading" class="alert alert-info" style="display:none;">
+            <a class="close">×</a>
+            <span id="i18n_loading_next_task">Loading next task...</span>
+        </div>
+        <!-- TASK COMPLETED message for the user -->
+        <div id="taskcompleted" class="alert alert-info" style="display:none;">
+            <strong id="i18n_task_completed">The task has been completed!</strong> <span id="i18n_thanks">Thanks a lot!</span>
+        </div>
+        <!-- FINISH message for the user -->
+        <div id="finish" class="alert alert-success" style="display:none;">
+            <strong id="i18n_congratulations">Congratulations!</strong> <span id="i18n_congratulations_text">You have participated in all available tasks!</span>
+            <br/>
+            <div class="alert-actions">
+                <a class="btn small" href="/">Go back</a>
+                <a class="btn small" href="/project">or, Check other projects</a>
+            </div>
+        </div>
+        <!-- ERROR message for the user -->
+        <div id="error" class="alert alert-danger" style="display:none;">
+            <a class="close">×</a>
+            <strong>Error!</strong> Something went wrong, please contact the site administrators
+        </div>
+    </div> <!-- End Success and Error Messages for the user -->
+</div> <!-- End of Row -->
+
+<!--
+    Task DOM for loading the Flickr Images
+    It uses the class="skeleton" to identify the elements that belong to the
+    task.
+-->
+<div class="row skeleton"> <!-- Start Skeleton Row-->
+    <div class="col-md-4 "><!-- Start of Question and Submission DIV (column) -->
+        <div class="step1">
+            <h1>Does this article mention the Roman past?</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+            <button class="btn btn-understood"><span id="i18n_understood">Understood</span></button>
+            <button class="btn btn-answer btn-step1" value='yes' style="display:none;"><span id="i18n_yes">Yes</span></button>
+            <button class="btn btn-answer btn-step1" value='no' style="display:none">No</button>
+        </div>
+
+        <div class="step2" style="display:none">
+            <h1>Does this article mention the Brexit?</h1>
+            <p><em>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</em></p>
+            <button class="btn btn-understood"><span id="i18n_understood">Understood</span></button>
+            <button class="btn btn-answer btn-step2" value='yes'><span id="i18n_yes">Yes</span></button>
+            <button class="btn btn-answer btn-step2" value='no'>No</button>
+        </div>
+
+        <div class="step3" style="display:none">
+            <h3>Summary</h3>
+            <p>Your chosen answers have been:</p>
+            <ul id="list">
+            </ul>
+            <h4>Any comments?</h4>
+            <textarea id="comments" rows="4" cols="45">
+            </textarea>
+            <button class="btn btn-answer btn-step3"><span id="i18n_yes">Submit the answers</span></button>
+        </div>
+
+    </div><!-- End of Question and Submission DIV (column) -->
+    <div class="col-md-8"><!-- Start of Photo DIV (column) -->
+        <a href="../tutorial" class="btn btn-info pull-right" style="margin-bottom:10px;margin-left: 5px; ">Tutorial</a>
+        <a id="newtab" target="_blank" href="#" class="btn btn-primary pull-right" style="margin-bottom:10px;">Open in a new tab</a>
+        <div id="text" class="embed-responsive embed-responsive-4by3"></div>
+    </div><!-- End of Photo DIV (columnt) -->
+</div><!-- End of Skeleton Row -->
+
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    function loadDisqus() {
+    $("#disqus_thread").toggle();
+    $(".btn-disqus").toggle();
+    var disqus_shortname = 'pybossa'; // required: replace example with your forum shortname
+    //var disqus_identifier = taskId;
+    var disqus_developer = 1;
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    }
+
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<script>
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length,c.length);
+        }
+    }
+    return "";
+}
+
+
+// Default language
+var userLocale = "en";
+// Translations
+var messages = {"en": {
+                        "i18n_welldone": "Well done!",
+                        "i18n_welldone_text": "Your answer has been saved",
+                        "i18n_loading_next_task": "Loading next task...",
+                        "i18n_task_completed": "The task has been completed!",
+                        "i18n_thanks": "Thanks a lot!",
+                        "i18n_congratulations": "Congratulations",
+                        "i18n_congratulations_text": "You have participated in all available tasks!",
+                        "i18n_yes": "Yes",
+                        "i18n_no_photo": "No photo",
+                        "i18n_i_dont_know": "I don't know",
+                        "i18n_working_task": "You are working now on task:",
+                        "i18n_tasks_completed": "You have completed:",
+                        "i18n_tasks_from": "tasks from",
+                        "i18n_show_comments": "Show comments:",
+                        "i18n_hide_comments": "Hide comments:",
+                        "i18n_question": "Do you see a human face in this photo?",
+                      },
+                "es": {
+                        "i18n_welldone": "Bien hecho!",
+                        "i18n_welldone_text": "Tu respuesta ha sido guardada",
+                        "i18n_loading_next_task": "Cargando la siguiente tarea...",
+                        "i18n_task_completed": "La tarea ha sido completadas!",
+                        "i18n_thanks": "Muchísimas gracias!",
+                        "i18n_congratulations": "Enhorabuena",
+                        "i18n_congratulations_text": "Has participado en todas las tareas disponibles!",
+                        "i18n_yes": "Sí",
+                        "i18n_no_photo": "No hay foto",
+                        "i18n_i_dont_know": "No lo sé",
+                        "i18n_working_task": "Estás trabajando en la tarea:",
+                        "i18n_tasks_completed": "Has completado:",
+                        "i18n_tasks_from": "tareas de",
+                        "i18n_show_comments": "Mostrar comentarios",
+                        "i18n_hide_comments": "Ocultar comentarios",
+                        "i18n_question": "¿Ves una cara humana en esta foto?",
+                      },
+               };
+// Update userLocale with server side information
+ $(document).ready(function(){
+     userLocale = document.getElementById('PYBOSSA_USER_LOCALE').textContent.trim();
+
+});
+
+function i18n_translate() {
+    var ids = Object.keys(messages[userLocale])
+    for (i=0; i<ids.length; i++) {
+        console.log("Translating: " + ids[i]);
+        document.getElementById(ids[i]).innerHTML = messages[userLocale][ids[i]];
+    }
+}
+
+
+function loadUserProgress() {
+    pybossa.userProgress('csvalidate').done(function(data){
+        var cookie = getCookie("understoodbtn");
+        if (cookie === "") {
+            if (data.done >= 2) {
+                setCookie("understoodbtn", "yes", 30);
+            }
+        }
+
+        if (data.done === 1 ) {
+            $('#survey').modal('show');
+        }
+    });
+}
+
+pybossa.taskLoaded(function(task, deferred) {
+    if ( !$.isEmptyObject(task) ) {
+        task.step = 1;
+        var cookie = getCookie("understoodbtn");
+        if (cookie === 'yes') {
+            task.showunderstood = false;
+        }
+        else {
+            task.showunderstood = true;
+        }
+        task.answer = {'romanpast': "no",
+            'brexit': "no",
+            'comments': ""}
+       deferred.resolve(task);
+    }
+    else {
+       deferred.resolve(task);
+    }
+});
+
+
+function resetStyles(task) {
+    $(".step1").show();
+    $(".btn-step1").hide();
+    if (task.showunderstood) {
+        $(".btn-understood").show();
+    }
+    else {
+        $(".btn-understood").hide();
+    }
+    $(".step2").hide();
+    $(".btn-step2").hide();
+    $(".step3").hide();
+    $(".btn-step3").hide();
+}
+
+
+function buildSummary(task) {
+    var friendly = {'brexit': 'Brexit', 'romanpast': 'Roman past'};
+    for(key in task.answer) {
+        var li = $("<li/>");
+        li.html("<strong>Is this article related to " + friendly[key] + "?</strong> " + task.answer[key]);
+        $("#list").append(li);
+    }
+}
+
+pybossa.presentTask(function(task, deferred) {
+    if ( !$.isEmptyObject(task) ) {
+        console.log(task.showunderstood);
+        loadUserProgress();
+        //i18n_translate();
+        resetStyles(task);
+        $('#task-id').html(task.id);
+        //var iframe = $("<iframe/>");
+        //iframe.attr("src", task.info.url);
+        //iframe.attr("frameborder", "0");
+        //iframe.addClass("embed-responsive-item");
+        //iframe.css("width", "100%");
+        //iframe.css("height", "500px");
+        //$("#article").html("").append(iframe);
+        var p = $("<p/>");
+        var title = $("<h3/>");
+        var source = $("<p/>");
+        title.text(task.info.title);
+        title.css("font-weight", "bold");
+        title.css("font-size", "18px");
+
+        var author = $("<p/>");
+        author.text("By: " + task.info.author);
+        author.css("font-size", "12px");
+
+        var date = $("<p/>");
+        date.text("Published: " + task.info.datetime);
+        date.css("font-size", "12px");
+
+
+        source.text("Source: " + task.info.source);
+        source.css("font-size", "12px");
+
+        p.html(task.info.text);
+        p.css("width", "100%");
+        p.css("font-size", "14px");
+        $("#text").html("").append(title);
+        $("#text").append(author);
+        $("#text").append(date);
+        $("#text").append(source);
+        $("#text").append(p);
+        $("#newtab").attr("href", task.info.url);
+
+
+        $('.btn-understood').off('click').on('click', function(evt) {
+           $(".btn-understood").hide();
+           $(".btn.btn-answer" + ".btn-step" + task.step).show();
+        });
+        console.log("daniel");
+        console.log(task.showunderstood);
+
+        if (!task.showunderstood) {
+            $(".btn-step1").show();
+        }
+
+        $('.btn.btn-answer.btn-step1').off('click').on('click', function(evt) {
+            var answer = $(this).attr("value");
+            if (typeof answer != 'undefined') {
+                console.log(answer);
+                if (answer === 'yes') {
+                    task.answer.romanpast = 'yes'
+                }
+                console.log(task.answer);
+                $(".step1").hide();
+                $(".step2").show();
+                if (task.showunderstood) {
+                    $(".btn-understood").show();
+                }
+                else {
+                    $(".btn-step2").show();
+                }
+                task.step += 1;
+            }
+            else {
+                $("#error").show();
+            }
+        });
+
+        $('.btn.btn-answer.btn-step2').off('click').on('click', function(evt) {
+            var answer = $(this).attr("value");
+            if (typeof answer != 'undefined') {
+                console.log(answer);
+                if (answer === 'yes') {
+                    task.answer.brexit= 'yes'
+                }
+                console.log(task.answer);
+                task.step += 1;
+                $(".step2").hide();
+                buildSummary(task);
+                $(".step3").show();
+                $(".btn-step3").show();
+            }
+            else {
+                $("#error").show();
+            }
+        });
+
+
+        $('.btn.btn-answer.btn-step3').off('click').on('click', function(evt) {
+                pybossa.saveTask(task.id, task.answer).done(function() {
+                    deferred.resolve();
+                });
+        });
+
+        $("#comments").on("change paste keyup", function(){
+            task.answer.comments = $(this).val();
+            //console.log(task.answer);
+        });
+
+
+        $("#loading").hide();
+    }
+    else {
+        $(".skeleton").hide();
+        $("#loading").hide();
+        $("#finish").fadeIn(500);
+    }
+});
+
+pybossa.run('csvalidate');
+</script>

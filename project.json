@@ -1,0 +1,5 @@
+{
+    "name": "Validate the relevance of textual data",
+    "short_name": "csvalidate2",
+    "description": "Validating the relevance of textual data contained in a CSV file and visualised without an iframe"
+}
